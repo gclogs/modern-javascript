@@ -1,4 +1,4 @@
-# 함수 바인딩
+# [함수 바인딩](https://ko.javascript.info/bind)
 
 > `setTimeout`에 메서드를 전달할 때처럼, 객체 메서드를 콜백으로 전달할 때 `this 정보가 사라지는` 문제가 발생!
 
@@ -165,6 +165,8 @@ say("Hello"); // Hello, John (인수 "Hello"가 say로 전달되었습니다.)
 say("Bye"); // Bye, John ("Bye"가 say로 전달되었습니다.)
 ```
 
+---
+
 ## 부분 적용
 지금 까지 `this` 바인딩에 대해서 얘기 해보았습니다.
 `this`가 아닌 인수도 바인딩 가능하다는 얘기를 여기서 해볼 것이라 관심이 없으신 분들은 넘어가도 좋습니다.
@@ -203,13 +205,17 @@ alert( double(5) ); // = mul(2, 5) = 10
 ```
 
 `mul.bind(null, 2)`를 호출하면 새로운 함수 `double`이 만들어집니다.
+
 `double`엔 컨텍스트가 `null`, 1번째 인수는 `2`인 `mul`의 호출 결과가 전달됩니다.
+
 추가 인수는 *그대로* 전달됩니다.
 
 이런 방식을 [부분 적용](https://en.wikipedia.org/wiki/Partial_application)이라고 부릅니다. 
+
 부분 적용을 사용하면 기존 함수의 매개변수를 고정하여 새로운 함수를 만들 수 있습니다.
 
 위 예시에선 `this`를 사용하지 않았다는 점에 주목하시기 바랍니다.
+
 `bind`엔 컨텍스트를 항상 넘겨줘야 하므로 `null`을 사용했습니다.
 
 부분 적용을 사용해 3을 곱해주는 함수 `trible`을 만들어 봅시다.
@@ -277,3 +283,14 @@ user.sayNow("Hello");
 - 래퍼에 전달된 인수("Hello")는 ...args가 됩니다.
 
 lodash 라이브러리의 [_.partial](https://lodash.com/docs#partial)을 사용하면 위와 같이 직접 구현하지 않아도 됩니다.
+
+---
+
+# 요약
+`func.bind(context, ...args)`는 `this`가 `context`로 고정되고 인수도 고정된 함수 `func`을 반환합니다.
+
+`bind`는 보통 객체 메서드의 `this`를 고정해 어딘가에 넘기고자 할 때 사용합니다. `setTimeout`에 넘길 때 같이 말이죠.
+
+기존 함수의 인수 몇 개를 고정한 함수를 `부분 적용(partially applied)` 함수 또는 `부분(partial) 함수`라고 부릅니다.
+
+부분 적용은 같은 인수를 여러 번 반복하고 싶지 않을 때 유용합니다. `send(from, to)`라는 함수가 있는데 from을 고정하고 싶다면 `send(from, to)`의 부분 함수를 구현해 사용하면 됩니다.
