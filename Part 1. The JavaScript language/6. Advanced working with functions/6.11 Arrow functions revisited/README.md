@@ -6,7 +6,7 @@
 
 - 화살표 함수는 몇 가지 독특하고 유용한 기능을 제공합니다.
 
-##### 자바스크립트를 사용하다 보면 저 멀리 동떨어진 곳에서 실행될 작은 함수를 작성해야 하는 상황을 자주 만나게 됩니다.
+#### 자바스크립트를 사용하다 보면 저 멀리 동떨어진 곳에서 실행될 작은 함수를 작성해야 하는 상황을 자주 만나게 됩니다.
 
 ```js
 arr.forEach(func) // func는 forEach가 호출될 때 배열 arr의 요소 전체를 대상으로 실행됩니다.
@@ -18,5 +18,45 @@ setTimeout(func) // func는 내장 스케줄러에 의해 실행됩니다.
 - 그런데 어딘가에 함수를 전달하게 되면 함수의 컨텍스트를 잃을 수 있습니다. 
   - 이럴 때 화살표 함수를 사용하면 현재 컨텍스트를 잃지 않아 편리합니다.
 
+---
+
 ## 화살표 함수에는 'this’가 없습니다
 
+- [4.4 메서드와 this](https://ko.javascript.info/object-methods) 챕터에서 화살표 함수엔 `this`가 없다는 것을 배운 바 있습니다.
+  - 화살표 함수 본문에서 `this`에 접근하면, 외부에서 값을 가져옵니다.
+
+- 이런 특징은 객처의 메서드(`showList()`) 안에서 동일 객체의 프로퍼티(`students`)를 대상으로 순회를 하는데 사용할 수 있습니다.
+
+```js
+let group = {
+  title: "1모둠",
+  students: ["보라", "호진", "지민"],
+
+  showList() {
+    this.students.forEach( // (*)
+      student => alert(this.title + ': ' + student)
+    );
+  }
+};
+
+group.showList();
+```
+
+- 예시의 `forEach`에서 화살표 함수를 사용했기 때문에 화살표 함수 본문에 있는 `this.title`은 화살표 함수 바깥에 있는 메서드인 `showList`가 가리키는 대상과 동일해집니다.
+  - 즉 `this.title`은 `group.title`과 같습니다.
+
+```js
+let group = {
+  title: "1모둠",
+  students: ["보라", "호진", "지민"],
+
+  showList() {
+    this.students.forEach(function(student) { // (*)
+      // TypeError: Cannot read property 'title' of undefined
+      alert(this.title + ': ' + student)
+    });
+  }
+};
+
+group.showList();
+```
