@@ -60,3 +60,58 @@ let group = {
 
 group.showList();
 ```
+
+- 에러는 `forEach`에 전달되는 함수의 `this`가 `undefined` 이기 때문에 발생했습니다.
+  - `alert` 함수에서 `undefined.title`에 접근하려 했기 때문에 얼럿 창엔 에러가 출력됩니다.
+
+- 그런데 화살표 함수는 `this` 자체가 없기 때문에 이러한 에러가 발생하지 않습니다.
+
+## 화살표 함수엔 `arguments`가 없습니다.
+
+- 화살표 함수는 일반 함수와는 다르게 모든 인수에 접근할 수 있게 해주는 유사 배열 객체 `arguments`를 지원하지 않습니다.
+
+- 이런 특징은 현재 `this` 값과 `arguments` 정보를 함께 실어 호출을 포워딩 해주는 데코레이터를 만들 때 유용하게 사용됩니다.
+
+- 아래 예시에서 데코레이터 `defer(f, ms)`는 함수를 인자로 받고 이 함수를 래퍼로 감싸 반환하는데, 함수 `f`는 `ms` 밀리초 후에 호출됩니다.
+
+```js
+function defer(f, ms) {
+  return function() {
+    setTimeout(() => f.apply(this, arguments), ms)
+  };
+}
+
+function sayHi(who) {
+  alert('안녕, ' + who);
+}
+
+let sayHiDeferred = defer(sayHi, 2000);
+sayHiDeferred("철수"); // 2초 후 "안녕, 철수"가 출력됩니다.
+```
+
+- 화살표 함수를 사용하지 않고 동일한 기능을 하는 데코레이터 함수를 만들면 다음과 같습니다.
+
+```js
+function defer(f, ms) {
+  return function(...args) {
+    let ctx = this;
+    setTimeout(function() {
+      return f.apply(ctx, args);
+    }, ms);
+  };
+}
+```
+
+- 일반 함수에선 `setTimeout`에 넘겨주는 콜백 함수에서 사용할 변수 `ctx`와 `args`를 반드시 만들어줘야 합니다.
+
+## 요약
+
+#### 화살표 함수가 일반 함수와 다른 점은 다음과 같습니다.
+
+- `this`를 가지지 않습니다.
+- `arguments`를 지원하지 않습니다.
+- `new`와 함께 호출할 수 없습니다.
+- 이 외에도 화살표 함수는 `super`가 없다는 것이 특징인데 아직 `super`에 대해 배우지 않았기 때문에 이번 챕터에서는 다루지 않았습니다.
+  - 화살표 함수와 `super`의 관계는 [9.2 클래스 상속](https://ko.javascript.info/class-inheritance) 챕터에서 학습할 예정입니다.
+
+#### 화살표 함수는 컨텍스트가 있는 긴 코드보다는 자체 *컨텍스트*가 없는 짧은 코드를 담을 용도로 만들어졌습니다. 그리고 이 목적에 잘 들어맞는 특징을 보입니다.
