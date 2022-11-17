@@ -294,3 +294,10 @@ lodash 라이브러리의 [_.partial](https://lodash.com/docs#partial)을 사용
 기존 함수의 인수 몇 개를 고정한 함수를 `부분 적용(partially applied)` 함수 또는 `부분(partial) 함수`라고 부릅니다.
 
 부분 적용은 같은 인수를 여러 번 반복하고 싶지 않을 때 유용합니다. `send(from, to)`라는 함수가 있는데 from을 고정하고 싶다면 `send(from, to)`의 부분 함수를 구현해 사용하면 됩니다.
+
+# 참고 자료
+
+| 블로그 | 주소 | 날짜 | 작성자 |
+|:---:|:---|:---|:---|
+| *javascript.info* | [함수 바인딩](https://ko.javascript.info/bind) | 2020년 9월 9일 | - |
+| *velog* | [자바스크립트의 실행 컨텍스트 (execution context)](https://velog.io/@ggong/%EC%9E%90%EB%B0%94%EC%8A%A4%ED%81%AC%EB%A6%BD%ED%8A%B8%EC%9D%98-%EC%8B%A4%ED%96%89-%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8-execution-context) | 2021년 6월 2일 | ggong |
